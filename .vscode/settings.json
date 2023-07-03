@@ -1,0 +1,3 @@
+{
+    "terminal.integrated.shellArgs.linux": ["-c", "bash ssh_reload.sh"]
+  }

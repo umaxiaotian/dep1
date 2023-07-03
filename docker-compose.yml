@@ -20,8 +20,6 @@ services:
       - ./Ansible/dir:/data
       - ./Ansible/app:/app
       - ./Ansible/ssh:/root/.ssh
-      - ./ssh_reload.sh:/ssh_reload.sh
-    command: sh -c "/ssh_reload.sh"
     # command: sh -c "ssh-keyscan target-node-1 >> /root/.ssh/known_hosts"
     environment:
       - ANSIBLE_CONFIG=/app/ansible.cfg
