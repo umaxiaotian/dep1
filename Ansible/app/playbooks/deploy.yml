@@ -1,0 +1,17 @@
+---
+- name: ファイルを作成するプレイブック
+  hosts: target_hosts # ファイルを作成する対象のホストまたはグループを指定します
+
+  tasks:
+    - name: ファイルを作成する
+      ansible.builtin.copy:
+        dest: /data/file.txt  # 作成するファイルのパスと名前を指定します
+        content: |
+          {{contents}}
+        mode: '0644'  # ファイルのパーミッションを指定します
+    - name: Include common role
+      include_role:
+        name: common
+      vars:
+        database_host: "localhost"
+        database_port: 5432

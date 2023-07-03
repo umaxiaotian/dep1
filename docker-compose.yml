@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  #発射台
+  ansible:
+    container_name: ansible
+    depends_on:
+      - target
+    build:
+      context: ./Ansible
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./Ansible/dir:/data
+      - ./Ansible/app:/app
+      - ./Ansible/ssh:/root/.ssh
+      - ./ssh_reload.sh:/ssh_reload.sh
+    command: sh -c "/ssh_reload.sh"
+    # command: sh -c "ssh-keyscan target-node-1 >> /root/.ssh/known_hosts"
+    environment:
+      - ANSIBLE_CONFIG=/app/ansible.cfg
+    networks:
+      - backend
+    tty: true
+    working_dir: /app
+#Ansibleターゲット
+  target:
+    container_name: target-node-1
+    build:
+      context: ./Target
+      dockerfile: Dockerfile
+    volumes:
+      - ./Target/dir:/data
+    networks:
+      - backend
+    tty: true
+    working_dir: /data
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.0/24
